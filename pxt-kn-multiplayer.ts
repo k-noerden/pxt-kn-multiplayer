@@ -16,6 +16,9 @@ namespace knmultiplayer {
 
     let _player: number = null;
     let buffer: Buffer;
+
+    let _onMultiplayerStart: () => void;
+
     /**
      * Start a new multiplayer game
      */
@@ -33,7 +36,7 @@ namespace knmultiplayer {
         _player = null;
 
         // console.log(control.deviceSerialNumber() + ": startMultiplayer " + myRandom);
-        radio.setTransmitSerialNumber(true);
+        // radio.setTransmitSerialNumber(true);
         radio.onReceivedBuffer(_receive);
         buffer = control.createBuffer(2);
         buffer[0] = MP_START;
@@ -66,6 +69,9 @@ namespace knmultiplayer {
                 _player = 1;
             }
             _isRunning = true;
+            if (_onMultiplayerStart) {
+                _onMultiplayerStart();
+            }
         } else if (action === MP_JOIN) {
             if (otherRandom === myRandom) {
                 // console.log(control.deviceSerialNumber() + ": knmultiplayer: bad join");
@@ -85,6 +91,9 @@ namespace knmultiplayer {
                 _player = 1;
             }
             _isRunning = true;
+            if (_onMultiplayerStart) {
+                _onMultiplayerStart();
+            }
         } else if (action === MP_SENDER_WON) {
             _isGameOverCommunicated = true;
             gameOver(GameOverState.Lost);
@@ -97,6 +106,13 @@ namespace knmultiplayer {
         }
     }
 
+    /**
+     *
+     */
+    //% block="on multiplayer start"
+    export function onMultiplayerStart(handler: () => void) {
+        _onMultiplayerStart = handler;
+    }
 
     /**
      *
