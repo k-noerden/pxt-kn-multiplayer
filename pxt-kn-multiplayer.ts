@@ -24,6 +24,7 @@ namespace knmultiplayer {
      */
     //% block="Start multiplayer"
     export function startMultiplayer() {
+        game.pause();
         basic.showLeds(`0 0 0 0 1
 0 0 1 0 1
 1 0 1 0 1
@@ -69,6 +70,7 @@ namespace knmultiplayer {
                 _player = 1;
             }
             _isRunning = true;
+            game.resume();
             if (_onMultiplayerStart) {
                 _onMultiplayerStart();
             }
@@ -91,6 +93,7 @@ namespace knmultiplayer {
                 _player = 1;
             }
             _isRunning = true;
+            game.resume();
             if (_onMultiplayerStart) {
                 _onMultiplayerStart();
             }
